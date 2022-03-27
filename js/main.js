@@ -6,7 +6,7 @@ startBtn.addEventListener('click',event =>{
     setTimeout(10);
 
 });
-
+//setInterval 정해진 시간마다 callback 함수 호출
 function setTimeout(sec) {
     let time = sec;
     let intervalId = setInterval(()=>{
