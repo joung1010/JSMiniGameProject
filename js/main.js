@@ -3,16 +3,10 @@ const items = document.querySelector('.play__items');
 const counter = document.querySelector('.counter');
 
 startBtn.addEventListener('click',event =>{
-    if (items.childElementCount === 1) {
-      items.removeChild(items.firstChild);
-    }else if (items.childElementCount === 2) {
-        items.removeChild(items.firstChild);
-        items.removeChild(items.lastChild);
-    }
-    setTimeout(10);
+
     const item = makeRandomItems(10);
     items.appendChild(item);
-
+    setTimeout(10);
 });
 //setInterval 정해진 시간마다 callback 함수 호출
 function setTimeout(sec) {
@@ -75,7 +69,7 @@ function makeRandomItems(count) {
    return item;
 
 }
-
+//todo 특정 범위 난수 발생 수정해야됨
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
