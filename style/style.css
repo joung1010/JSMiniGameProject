@@ -9,7 +9,7 @@ body {
 .findCarrot {
     background: center/cover no-repeat url("../img/background.png");
     width: 900px;
-    height: 600px;
+    height: 700px;
     margin: 20px auto auto;
     border-radius: 30px;
 }
@@ -96,4 +96,7 @@ body {
     color: white;
     font-size: 40px;
     font-weight: bold;
+}
+.item {
+    position: absolute;
 }
