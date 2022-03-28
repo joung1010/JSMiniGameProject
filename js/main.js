@@ -1,11 +1,23 @@
-const startBtn = document.querySelector('.controller__startBtn');
+const controllerBtn = document.querySelector('.controller__btn');
 const items = document.querySelector('.play__items');
 const counter = document.querySelector('.counter');
 
-startBtn.addEventListener('click',event =>{
+let intervalId
+controllerBtn.addEventListener('click',event =>{
+    let btnType = event.currentTarget.children[0].id
+    if (btnType === 'startBtn') {
+        if(items.childElementCount > 0){
+            items.innerHTML = '';
+        }
 
-     makeRandomItems(10);
-    setTimeout(10);
+        controllerBtn.innerHTML = `<i class="fa fa-stop" aria-hidden="true" id="stopBtn"></i>`;
+        intervalId = setTimeout(10);
+        makeRandomItems(10);
+    } else {
+        clearInterval(intervalId)
+        controllerBtn.innerHTML = `<i class="fa fa-play" aria-hidden="true" id="startBtn"></i>`;
+    }
+
 });
 //setInterval 정해진 시간마다 callback 함수 호출
 function setTimeout(sec) {
@@ -63,7 +75,7 @@ function makeRandomItems(count) {
     }
     counter.textContent = count;
 }
-//todo 특정 범위 난수 발생 수정해야됨
+
 function getRandomIntX(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);

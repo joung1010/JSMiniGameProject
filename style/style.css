@@ -22,7 +22,7 @@ body {
     margin-bottom: 100px;
 }
 
-.controller__startBtn {
+.controller__btn {
     width: 70px;
     height: 70px;
     border: 5px solid black;
