@@ -4,8 +4,7 @@ const counter = document.querySelector('.counter');
 
 startBtn.addEventListener('click',event =>{
 
-    const item = makeRandomItems(10);
-    items.appendChild(item);
+     makeRandomItems(10);
     setTimeout(10);
 });
 //setInterval 정해진 시간마다 callback 함수 호출
@@ -47,33 +46,39 @@ function makeRandomItems(count) {
     const maxX = items.getBoundingClientRect().right;
     const minY = items.getBoundingClientRect().y;
     const maxY = items.getBoundingClientRect().bottom;
-    console.log(maxX);
-    console.log(maxY);
 
-    const item = document.createElement("div");
-    item.setAttribute('class','item');
     for (let i = 0; i < count; i++) {
         const carrot = document.createElement("img");
         carrot.setAttribute('src','img/carrot.png');
-        carrot.style.transform=`translateX(${getRandomInt(minX,maxX)}px)`;
-        carrot.style.transform=`translateY(${getRandomInt(minY,maxY)}px)`;
+        carrot.setAttribute('class','item carrot');
+        const carrotWidth = carrot.getBoundingClientRect().width;
+        carrot.style.transform=`translate(${getRandomIntX(minX,maxX)}px,${getRandomIntY(minY,maxY)}px)`;
         const bug = document.createElement("img");
         bug.setAttribute('src','img/bug.png');
-        bug.style.transform=`translateX(${getRandomInt(minX,maxX)}px)`;
-        bug.style.transform=`translateY(${getRandomInt(minY,maxY)}px)`;
+        bug.setAttribute('class','item bug');
+        bug.style.transform=`translate(${getRandomIntX(minX,maxX)}px,${getRandomIntY(minY,maxY)}px)`;
 
-        item.appendChild(carrot);
-        item.appendChild(bug);
+        items.appendChild(carrot);
+        items.appendChild(bug);
     }
     counter.textContent = count;
-   return item;
-
 }
 //todo 특정 범위 난수 발생 수정해야됨
-function getRandomInt(min, max) {
+function getRandomIntX(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
-    console.log(`min: ${min}`);
-    console.log(`max: ${max}`);
-    return Math.floor(Math.random() * (max - min)) ;
+    let randomVal = (Math.random() * (max - min));
+    if (randomVal > 850) {
+        randomVal -=60;
+    }
+    return Math.floor(randomVal)  ;
+}
+function getRandomIntY(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    let randomVal = (Math.random() * (max - min));
+    if (randomVal > 233) {
+        randomVal -= 60;
+    }
+    return Math.floor(randomVal)  ;
 }
