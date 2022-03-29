@@ -110,6 +110,7 @@ let totalCount;
 items.addEventListener('click', event => {
     console.log(event.target);
     if (event.target.id === 'retryBtn') {
+        audioBg.play();
         items.innerHTML = '';
         intervalId = setTimeout(10);
         makeRandomItems(10);
