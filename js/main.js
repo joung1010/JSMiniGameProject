@@ -1,9 +1,15 @@
 const controllerBtn = document.querySelector('.controller__btn');
 const items = document.querySelector('.play__items');
 const counter = document.querySelector('.counter');
+const audioBg = new Audio('../sound/bg.mp3');
+const carrotPull = new Audio('../sound/carrot_pull.mp3');
+const bugPull = new Audio('../sound/bug_pull.mp3');
+const alert = new Audio('../sound/alert.wav');
+const gameWin = new Audio('../sound/game_win.mp3');
 
 let intervalId
 controllerBtn.addEventListener('click', event => {
+    audioBg.play();
     let btnType = event.currentTarget.children[0].id
     if (btnType === 'startBtn') {
         if (items.childElementCount > 0) {
@@ -13,10 +19,11 @@ controllerBtn.addEventListener('click', event => {
         controllerBtn.innerHTML = `<i class="fa fa-stop" aria-hidden="true" id="stopBtn"></i>`;
         makeRandomItems(10);
     } else {
+        audioBg.pause();
+        alert.play();
         clearInterval(intervalId)
         controllerBtn.innerHTML = `<i class="fa fa-play" aria-hidden="true" id="startBtn"></i>`;
     }
-
 });
 
 //setInterval 정해진 시간마다 callback 함수 호출
@@ -108,17 +115,22 @@ items.addEventListener('click', event => {
         makeRandomItems(10);
     }
     if (event.target.className === 'item bug') {
+        bugPull.play();
         controllerBtn.innerHTML = `<i class="fa fa-play" aria-hidden="true" id="startBtn"></i>`;
         clearInterval(intervalId);
         const msg = makeResultMessage('YOU LOST');
         items.appendChild(msg);
     }
     if (event.target.className === 'item carrot') {
+        carrotPull.play();
         totalCount = Number(document.querySelector('.counter').textContent);
         items.removeChild(event.target);
         totalCount--;
         counter.textContent = totalCount;
         if(totalCount === 0){
+            audioBg.pause();
+            gameWin.play();
+
             controllerBtn.innerHTML = `<i class="fa fa-play" aria-hidden="true" id="startBtn"></i>`;
             clearInterval(intervalId);
             const msg = makeResultMessage('YOU WIN');
