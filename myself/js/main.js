@@ -1,11 +1,11 @@
 const controllerBtn = document.querySelector('.controller__btn');
 const items = document.querySelector('.play__items');
 const counter = document.querySelector('.counter');
-const audioBg = new Audio('../sound/bg.mp3');
-const carrotPull = new Audio('../sound/carrot_pull.mp3');
-const bugPull = new Audio('../sound/bug_pull.mp3');
-const alert = new Audio('../sound/alert.wav');
-const gameWin = new Audio('../sound/game_win.mp3');
+const audioBg = new Audio('sound/bg.mp3');
+const carrotPull = new Audio('sound/carrot_pull.mp3');
+const bugPull = new Audio('sound/bug_pull.mp3');
+const alert = new Audio('sound/alert.wav');
+const gameWin = new Audio('sound/game_win.mp3');
 
 let intervalId
 controllerBtn.addEventListener('click', event => {
