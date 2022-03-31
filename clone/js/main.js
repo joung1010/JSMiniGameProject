@@ -1,8 +1,8 @@
 'use strict';
 const CARROT_SIZE = 80;
-const CARROT_COUNT = 5;
-const BUG_COUNT = 5;
-const GAME_DURATION_SEC = 5;
+const CARROT_COUNT = 20;
+const BUG_COUNT = 20;
+const GAME_DURATION_SEC = 10;
 
 const field = document.querySelector('.game__field');
 const fieldRect = field.getBoundingClientRect();
@@ -76,6 +76,7 @@ function showStopBtn() {
     const icon = gameBtn.querySelector('.fa');
     icon.classList.add('fa-stop');
     icon.classList.remove('fa-play');
+    gameBtn.style.visibility = 'visible';
 }
 
 

@@ -24,6 +24,10 @@
     --border__radious: 20px;
 }
 
+body {
+    background-color: black;
+}
+
 button {
     border: none;
     outline: none;
@@ -73,6 +77,8 @@ body {
     margin-top: 8px;
     border-radius: var(--border__radious);
     visibility: hidden;
+    user-select: none;
+    cursor: auto;
 }
 
 .game__score {
@@ -81,14 +87,15 @@ body {
     align-items: center;
     width: var(--game__score__width);
     height: var(--game__score__height);
-    font-size: var(--font__size__large);
+    font-size: var(--font__size__midium);
     margin-top: 8px;
     background-color: var(--color__darksalmon);
     border-radius: 50%;
     border: 3px solid black;
     color: var(--color__white);
     visibility: hidden;
-
+    user-select: none;
+    cursor: auto;
 }
 
 .game__field {
@@ -126,4 +133,12 @@ body {
 .popup__message {
     display: block;
     font-size: var(--font__size__midium);
+}
+
+.carrot,.bug {
+    transition: transform 100ms ease-in;
+
+}
+.carrot:hover, .bug:hover {
+    transform: scale(1.1);
 }
