@@ -10,6 +10,10 @@ const gameBtn = document.querySelector('.game__button');
 const gameTimer = document.querySelector('.game__timer');
 const gameScore = document.querySelector('.game__score');
 
+const popup = document.querySelector('.popup');
+const popupMsg = document.querySelector('.popup__message');
+const popupRefresh = document.querySelector('.popup__refresh');
+
 let started = false;
 let score = 0;
 let timer = undefined;
@@ -32,7 +36,9 @@ function startGame() {
 
 
 function stopGame() {
-
+    stopGameTimer();
+    hideGameStartBtn();
+    showPopupWithText('REPLAY????');
 }
 
 
@@ -42,9 +48,20 @@ function showStopBtn() {
     icon.classList.remove('fa-play');
 }
 
+
+function hideGameStartBtn() {
+    gameBtn.style.visibility = 'hidden';
+    gameBtn.style.visibility = 'hidden';
+}
+
 function showTimerAndScore() {
     gameTimer.style.visibility = 'visible';
     gameScore.style.visibility = 'visible';
+}
+
+function showPopupWithText(text) {
+    popupMsg.innerText = text;
+    popup.classList.remove('popup-hide');
 }
 
 // innerText vs textContent
@@ -53,7 +70,6 @@ function showTimerAndScore() {
 // 해상 노드가 가지고 있는 텍스트 값을 그대로 읽습니다.
 //또한, 'display:none' 스타일이 적용된 '숨겨진 텍스트' 문자열도 그대로 출력되는 것을 확인 할 수 있습니다.
 //
-
 
 function initGame() {
     field.innerHTML = '';
@@ -74,6 +90,11 @@ function startGameTimer() {
         updateTimerText(--remainingTimeSec);
     }, 1000);
 }
+
+function stopGameTimer() {
+    clearInterval(timer);
+}
+
 
 function updateTimerText(time) {
     const min = Math.floor(time / 60);
