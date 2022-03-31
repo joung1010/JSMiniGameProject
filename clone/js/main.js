@@ -18,7 +18,12 @@ let started = false;
 let score = 0;
 let timer = undefined;
 
-field.addEventListener('click',onFiledClick);
+field.addEventListener('click', onFiledClick);
+
+popupRefresh.addEventListener('click', () => {
+    startGame();
+    hidePopup();
+});
 
 gameBtn.addEventListener('click', event => {
     if (started) {
@@ -26,10 +31,11 @@ gameBtn.addEventListener('click', event => {
     } else {
         startGame();
     }
-    started = !started;
+
 });
 
 function startGame() {
+    started = true;
     initGame();
     showStopBtn();
     showTimerAndScore();
@@ -38,14 +44,20 @@ function startGame() {
 
 
 function stopGame() {
+    started = false;
     stopGameTimer();
     hideGameStartBtn();
     showPopupWithText('REPLAY????');
 }
 
+function finishGame(win) {
+    started = false;
+    hideGameStartBtn();
+    showPopupWithText(win ? 'YOU WON' : 'YOU LOST');
+}
 
 function showStopBtn() {
-    const icon = gameBtn.querySelector('.fa-play');
+    const icon = gameBtn.querySelector('.fa');
     icon.classList.add('fa-stop');
     icon.classList.remove('fa-play');
 }
@@ -59,6 +71,10 @@ function hideGameStartBtn() {
 function showTimerAndScore() {
     gameTimer.style.visibility = 'visible';
     gameScore.style.visibility = 'visible';
+}
+
+function hidePopup() {
+    popup.classList.add('popup-hide');
 }
 
 function showPopupWithText(text) {
@@ -113,29 +129,24 @@ function onFiledClick(event) {
     const target = event.target;
 
     //matches 해당 css가 맞는지지
-   if (target.matches('.carrot')) {
+    if (target.matches('.carrot')) {
         //당근
-       target.remove();
-       score++;
-       updateScoreBoard();
-       if (score === CARROT_COUNT) {
-          stopGameTimer();
-           finishGame(true);
-       }
-    }else if (target.matches('.bug')) {
+        target.remove();
+        score++;
+        updateScoreBoard();
+        if (score === CARROT_COUNT) {
+            stopGameTimer();
+            finishGame(true);
+        }
+    } else if (target.matches('.bug')) {
         stopGameTimer();
         finishGame(false);
-   }
+    }
 }
 
-function finishGame(win) {
-    started = false;
-    hideGameStartBtn();
-    showPopupWithText(win ? 'YOU WON' : 'YOU LOST');
-}
 
 function updateScoreBoard() {
-    gameScore.innerText = CARROT_COUNT -  score;
+    gameScore.innerText = CARROT_COUNT - score;
 }
 
 function addItem(className, count, imgPath) {
