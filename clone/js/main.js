@@ -18,6 +18,8 @@ let started = false;
 let score = 0;
 let timer = undefined;
 
+field.addEventListener('click',onFiledClick);
+
 gameBtn.addEventListener('click', event => {
     if (started) {
         stopGame();
@@ -85,6 +87,7 @@ function startGameTimer() {
     timer = setInterval(() => {
         if (remainingTimeSec <= 0) {
             clearInterval(timer);
+            finishGame(CARROT_COUNT === score);
             return;
         }
         updateTimerText(--remainingTimeSec);
@@ -101,6 +104,38 @@ function updateTimerText(time) {
     const seconds = time % 60;
 
     gameTimer.innerText = `${min}:${seconds}`;
+}
+
+function onFiledClick(event) {
+    if (!started) {
+        return;
+    }
+    const target = event.target;
+
+    //matches 해당 css가 맞는지지
+   if (target.matches('.carrot')) {
+        //당근
+       target.remove();
+       score++;
+       updateScoreBoard();
+       if (score === CARROT_COUNT) {
+          stopGameTimer();
+           finishGame(true);
+       }
+    }else if (target.matches('.bug')) {
+        stopGameTimer();
+        finishGame(false);
+   }
+}
+
+function finishGame(win) {
+    started = false;
+    hideGameStartBtn();
+    showPopupWithText(win ? 'YOU WON' : 'YOU LOST');
+}
+
+function updateScoreBoard() {
+    gameScore.innerText = CARROT_COUNT -  score;
 }
 
 function addItem(className, count, imgPath) {
