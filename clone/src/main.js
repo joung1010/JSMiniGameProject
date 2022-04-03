@@ -1,107 +1,6 @@
 'use strict';
 import Popup from "./popup.js";
-import Field from "./field.js";
-import * as sound from "./sound.js";
-
-const CARROT_COUNT = 20;
-const BUG_COUNT = 20;
-const GAME_DURATION_SEC = 10;
-
-const gameBtn = document.querySelector('.game__button');
-const gameTimer = document.querySelector('.game__timer');
-const gameScore = document.querySelector('.game__score');
-
-let started = false;
-let score = 0;
-let timer = undefined;
-
-
-const gameFinishBanner = new Popup();
-gameFinishBanner.setClickListener(() => {
-    startGame();
-});
-
-const gameField = new Field(CARROT_COUNT, BUG_COUNT);
-gameField.setCarrotSize(80);
-gameField.setOnClickListener(onItemClick);
-
-function onItemClick(item) {
-    if (!started) {
-        return;
-    }
-    if (item === 'carrot') {
-        score++;
-        updateScoreBoard();
-        if (score === CARROT_COUNT) {
-            finishGame(true);
-        }
-    } else if (item === 'bug') {
-        finishGame(false);
-    }
-}
-
-
-gameBtn.addEventListener('click', event => {
-    if (started) {
-        stopGame();
-    } else {
-        startGame();
-    }
-
-});
-
-function startGame() {
-    started = true;
-    initGame();
-    showStopBtn();
-    showTimerAndScore();
-    startGameTimer();
-    sound.playBackGround();
-}
-
-
-function stopGame() {
-    started = false;
-    stopGameTimer();
-    hideGameStartBtn();
-    gameFinishBanner.showWithText('REPLAY????');
-
-    sound.playAlert();
-    sound.stopBackGround();
-}
-
-function finishGame(win) {
-    started = false;
-    hideGameStartBtn();
-    if (win) {
-        sound.playWin();
-    } else {
-        sound.playBug();
-    }
-    stopGameTimer();
-    sound.stopBackGround();
-    gameFinishBanner.showWithText(win ? 'YOU WON' : 'YOU LOST');
-
-}
-
-function showStopBtn() {
-    const icon = gameBtn.querySelector('.fa');
-    icon.classList.add('fa-stop');
-    icon.classList.remove('fa-play');
-    gameBtn.style.visibility = 'visible';
-}
-
-
-function hideGameStartBtn() {
-    gameBtn.style.visibility = 'hidden';
-    gameBtn.style.visibility = 'hidden';
-}
-
-function showTimerAndScore() {
-    gameTimer.style.visibility = 'visible';
-    gameScore.style.visibility = 'visible';
-}
-
+import Game from "./game.js";
 
 // innerText vs textContent
 //innerText는 'Element'의 속성으로, 해당 Element 내에서 사용자에게 '보여지는' 텍스트 값을 읽어옵니다
@@ -110,45 +9,30 @@ function showTimerAndScore() {
 //또한, 'display:none' 스타일이 적용된 '숨겨진 텍스트' 문자열도 그대로 출력되는 것을 확인 할 수 있습니다.
 //
 
-function initGame() {
-    score = 0;
-    gameField.init();
-    gameScore.innerText = CARROT_COUNT
+const gameFinishBanner = new Popup();
+const game = new Game(2, 5, 5);
 
+game.setGameStopListener((reason) => {
+    let message;
+    switch (reason) {
+        case 'cancel':
+            message = 'Replay ??';
+            break;
+        case 'win':
+            message = 'YOU WON!!';
+            break;
+        case  'lose':
+            message = 'YOU LOSE :)';
+            break;
+        default:
+            throw new Error('not valid reason');
+    }
+    gameFinishBanner.showWithText(message);
+});
 
-}
-
-function startGameTimer() {
-    let remainingTimeSec = GAME_DURATION_SEC;
-    updateTimerText(remainingTimeSec);
-    timer = setInterval(() => {
-        if (remainingTimeSec <= 0) {
-            clearInterval(timer);
-            finishGame(CARROT_COUNT === score);
-            return;
-        }
-        updateTimerText(--remainingTimeSec);
-    }, 1000);
-}
-
-function stopGameTimer() {
-    clearInterval(timer);
-}
-
-
-function updateTimerText(time) {
-    const min = Math.floor(time / 60);
-    const seconds = time % 60;
-
-    gameTimer.innerText = `${min}:${seconds}`;
-}
-
-
-function updateScoreBoard() {
-    gameScore.innerText = CARROT_COUNT - score;
-}
-
-
+gameFinishBanner.setClickListener(() => {
+    game.start();
+});
 
 
 
