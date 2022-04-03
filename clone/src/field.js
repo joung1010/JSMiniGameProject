@@ -1,5 +1,5 @@
 'use strict';
-const carrotSound = new Audio('sound/carrot_pull.mp3');
+import * as sound from "./sound.js";
 
 export default class Field {
     constructor(carrotCount, bugCount) {
@@ -22,7 +22,7 @@ export default class Field {
         const target = event.target;
         if (target.matches('.carrot')) {
             target.remove();
-            playSound(carrotSound);
+            sound.playCarrot();
             //이부분 함수가 실행이 안됨
             // 왜냐하면 자바스크립트에서 콜백으로 함수를 전달하면 그 함수만 전달되고 클래스에 포함된 정보는 전달되지 않는다.
             this.onItemClick && this.onItemClick('carrot');
@@ -86,7 +86,3 @@ function randomNumber(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-function playSound(sound) {
-    sound.currentTime = 0;
-    sound.play();
-}
