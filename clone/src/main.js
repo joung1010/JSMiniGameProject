@@ -2,23 +2,16 @@
 import Popup from "./popup.js";
 import Field from "./field.js";
 
-const gamePlayField = new Field(20,20);
-gamePlayField.setCarrotSize(80);
-
-const CARROT_COUNT =gamePlayField.getCarrotCount();
-const BUG_COUNT = gamePlayField.getBugCount();
-
+const CARROT_COUNT = 20;
+const BUG_COUNT = 20;
 const GAME_DURATION_SEC = 10;
-
 
 
 const gameBtn = document.querySelector('.game__button');
 const gameTimer = document.querySelector('.game__timer');
 const gameScore = document.querySelector('.game__score');
 
-const gameFinishBanner = new Popup();
 
-const carrotSound = new Audio('sound/carrot_pull.mp3');
 const bugSound = new Audio('sound/bug_pull.mp3');
 const gameWinSound = new Audio('sound/game_win.mp3');
 const alertSound = new Audio('sound/alert.wav');
@@ -28,11 +21,31 @@ let started = false;
 let score = 0;
 let timer = undefined;
 
-gamePlayField.setOnClickListener(onFiledClick);
 
-gameFinishBanner.setClickListener(()=>{
+const gameFinishBanner = new Popup();
+gameFinishBanner.setClickListener(() => {
     startGame();
 });
+
+const gameField = new Field(CARROT_COUNT, BUG_COUNT);
+gameField.setCarrotSize(80);
+gameField.setOnClickListener(onItemClick);
+
+function onItemClick(item) {
+    if (!started) {
+        return;
+    }
+    if (item === 'carrot') {
+        score++;
+        updateScoreBoard();
+        if (score === CARROT_COUNT) {
+            finishGame(true);
+        }
+    } else if (item === 'bug') {
+        finishGame(false);
+    }
+}
+
 
 gameBtn.addEventListener('click', event => {
     if (started) {
@@ -96,9 +109,6 @@ function showTimerAndScore() {
 }
 
 
-
-
-
 // innerText vs textContent
 //innerText는 'Element'의 속성으로, 해당 Element 내에서 사용자에게 '보여지는' 텍스트 값을 읽어옵니다
 //textContent는 'Node'의 속성으로, innetText와는 달리 <script>나 <style> 태그와 상관없이
@@ -108,11 +118,10 @@ function showTimerAndScore() {
 
 function initGame() {
     score = 0;
-    gamePlayField.clearItem();
+    gameField.init();
     gameScore.innerText = CARROT_COUNT
-    //벌레와 당근을 생성한뒤 field에 추가하자
-    gamePlayField.addItem('carrot', CARROT_COUNT, 'img/carrot.png');
-    gamePlayField.addItem('bug', BUG_COUNT, 'img/bug.png');
+
+
 }
 
 function startGameTimer() {
@@ -140,31 +149,6 @@ function updateTimerText(time) {
     gameTimer.innerText = `${min}:${seconds}`;
 }
 
-function onFiledClick(event) {
-    if (!started) {
-        return;
-    }
-    const target = event.target;
-
-    //matches 해당 css가 맞는지지
-    if (target.matches('.carrot')) {
-        //당근
-        target.remove();
-        score++;
-        playSound(carrotSound);
-        updateScoreBoard();
-        if (score === CARROT_COUNT) {
-            finishGame(true);
-        }
-    } else if (target.matches('.bug')) {
-        finishGame(false);
-    }
-}
-
-function playSound(sound) {
-    sound.currentTime = 0;
-    sound.play();
-}
 
 function stopSound(sound) {
     sound.pause();
@@ -174,6 +158,10 @@ function updateScoreBoard() {
     gameScore.innerText = CARROT_COUNT - score;
 }
 
+function playSound(sound) {
+    sound.currentTime = 0;
+    sound.play();
+}
 
 
 
