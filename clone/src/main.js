@@ -1,4 +1,6 @@
 'use strict';
+import Popup from "./popup.js";
+
 const CARROT_SIZE = 80;
 const CARROT_COUNT = 20;
 const BUG_COUNT = 20;
@@ -10,9 +12,7 @@ const gameBtn = document.querySelector('.game__button');
 const gameTimer = document.querySelector('.game__timer');
 const gameScore = document.querySelector('.game__score');
 
-const popup = document.querySelector('.popup');
-const popupMsg = document.querySelector('.popup__message');
-const popupRefresh = document.querySelector('.popup__refresh');
+const gameFinishBanner = new Popup();
 
 const carrotSound = new Audio('sound/carrot_pull.mp3');
 const bugSound = new Audio('sound/bug_pull.mp3');
@@ -24,11 +24,11 @@ let started = false;
 let score = 0;
 let timer = undefined;
 
+
 field.addEventListener('click', onFiledClick);
 
-popupRefresh.addEventListener('click', () => {
+gameFinishBanner.setClickListener(()=>{
     startGame();
-    hidePopup();
 });
 
 gameBtn.addEventListener('click', event => {
@@ -54,7 +54,8 @@ function stopGame() {
     started = false;
     stopGameTimer();
     hideGameStartBtn();
-    showPopupWithText('REPLAY????');
+    gameFinishBanner.showWithText('REPLAY????');
+
     playSound(alertSound);
     stopSound(bgSound);
 }
@@ -69,7 +70,8 @@ function finishGame(win) {
     }
     stopGameTimer();
     stopSound(bgSound);
-    showPopupWithText(win ? 'YOU WON' : 'YOU LOST');
+    gameFinishBanner.showWithText(win ? 'YOU WON' : 'YOU LOST');
+
 }
 
 function showStopBtn() {
@@ -90,14 +92,9 @@ function showTimerAndScore() {
     gameScore.style.visibility = 'visible';
 }
 
-function hidePopup() {
-    popup.classList.add('popup-hide');
-}
 
-function showPopupWithText(text) {
-    popupMsg.innerText = text;
-    popup.classList.remove('popup-hide');
-}
+
+
 
 // innerText vs textContent
 //innerText는 'Element'의 속성으로, 해당 Element 내에서 사용자에게 '보여지는' 텍스트 값을 읽어옵니다
