@@ -1,6 +1,6 @@
 'use strict';
 import Popup from "./popup.js";
-import Game from "./game.js";
+import GameBuilder from "./game.js";
 
 // innerText vs textContent
 //innerText는 'Element'의 속성으로, 해당 Element 내에서 사용자에게 '보여지는' 텍스트 값을 읽어옵니다
@@ -10,7 +10,11 @@ import Game from "./game.js";
 //
 
 const gameFinishBanner = new Popup();
-const game = new Game(2, 5, 5);
+const game = new GameBuilder()
+    .gameDuration(10)
+    .carrotCount(4)
+    .bugCount(4)
+    .build();
 
 game.setGameStopListener((reason) => {
     let message;

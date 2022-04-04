@@ -3,9 +3,36 @@
 import Field from "./field.js";
 import * as sound from "./sound.js";
 
-export default class Game {
-    constructor(gameDurationSec, carrotCount, bugCount) {
-        this.playGameTime = gameDurationSec;
+//builder 패턴 사용하기
+
+export default class GameBuilder {
+    gameDuration(duration) {
+        this.gameDuration = duration;
+        return this;
+    }
+
+    carrotCount(num) {
+        this.carrotCount = num;
+        return this;
+    }
+
+    bugCount(num) {
+        this.bugCount = num;
+        return this;
+    }
+
+    build() {
+        return new Game(
+            this.gameDuration,
+            this.carrotCount,
+            this.bugCount
+        );
+    }
+}
+
+class Game {
+    constructor(gameDuration, carrotCount, bugCount) {
+        this.gameDuration = gameDuration;
         this.carrotCount = carrotCount
         this.bugCount = bugCount;
 
@@ -110,7 +137,7 @@ export default class Game {
     }
 
     startGameTimer() {
-        let remainingTimeSec = this.playGameTime;
+        let remainingTimeSec = this.gameDuration;
         this.updateTimerText(remainingTimeSec);
         this.timer = setInterval(() => {
             if (remainingTimeSec <= 0) {
