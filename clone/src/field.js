@@ -1,7 +1,12 @@
 'use strict';
 import * as sound from "./sound.js";
 
-export default class Field {
+export const ItemType = Object.freeze({
+    carrot: 'carrot',
+    bug: 'bug'
+});
+
+export class Field {
     constructor(carrotCount, bugCount) {
         this.field = document.querySelector('.game__field');
         this.fieldRect = this.field.getBoundingClientRect();
@@ -17,6 +22,7 @@ export default class Field {
         this.field.addEventListener('click', this.onClick);
 
     }
+
     // 해당 함수를 변수에 할당한다.
     onClick = event => {
         const target = event.target;
@@ -25,9 +31,9 @@ export default class Field {
             sound.playCarrot();
             //이부분 함수가 실행이 안됨
             // 왜냐하면 자바스크립트에서 콜백으로 함수를 전달하면 그 함수만 전달되고 클래스에 포함된 정보는 전달되지 않는다.
-            this.onItemClick && this.onItemClick('carrot');
+            this.onItemClick && this.onItemClick(ItemType.carrot);
         } else if (target.matches('.bug')) {
-            this.onItemClick && this.onItemClick('bug');
+            this.onItemClick && this.onItemClick(ItemType.bug);
         }
     }
 

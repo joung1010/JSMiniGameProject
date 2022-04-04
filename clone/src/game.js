@@ -1,6 +1,6 @@
 'use strict'
 
-import Field from "./field.js";
+import {Field, ItemType} from "./field.js";
 import * as sound from "./sound.js";
 //Object.freeze() 메서드는 객체를 동결합니다.
 // 동결된 객체는 더 이상 변경될 수 없습니다.
@@ -95,13 +95,13 @@ class Game {
         if (!this.started) {
             return;
         }
-        if (item === 'carrot') {
+        if (item === ItemType.carrot) {
             this.score++;
             this.updateScoreBoard();
             if (this.score === this.carrotCount) {
                 this.stop(Reason.win);
             }
-        } else if (item === 'bug') {
+        } else if (item === ItemType.bug) {
             this.stop(Reason.lose);
         }
     }
