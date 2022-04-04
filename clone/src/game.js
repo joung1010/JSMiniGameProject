@@ -2,10 +2,20 @@
 
 import Field from "./field.js";
 import * as sound from "./sound.js";
+//Object.freeze() 메서드는 객체를 동결합니다.
+// 동결된 객체는 더 이상 변경될 수 없습니다.
+// 즉, 동결된 객체는 새로운 속성을 추가하거나 존재하는 속성을 제거하는
+// 것을 방지하며 존재하는 속성의 불변성, 설정 가능성(configurability),
+// 작성 가능성이 변경되는 것을 방지하고, 존재하는 속성의 값이 변경되는 것도 방지합니다.
+
+export const Reason = Object.freeze({
+   win : 'win',
+   lose: 'lose',
+   cancel : 'cancel'
+});
 
 //builder 패턴 사용하기
-
-export default class GameBuilder {
+export  class GameBuilder {
     gameDuration(duration) {
         this.gameDuration = duration;
         return this;
@@ -77,7 +87,7 @@ class Game {
         this.hideGameStartBtn();
         sound.playAlert();
         sound.stopBackGround();
-        this.onGameStop && this.onGameStop('cancel');
+        this.onGameStop && this.onGameStop(Reason.cancel);
     }
 
     finishGame(win) {
@@ -90,7 +100,7 @@ class Game {
         }
         this.stopGameTimer();
         sound.stopBackGround();
-        this.onGameStop && this.onGameStop(win ? 'win' : 'lose');
+        this.onGameStop && this.onGameStop(win ? Reason.win : Reason.lose);
 
     }
 
