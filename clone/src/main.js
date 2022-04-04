@@ -1,6 +1,7 @@
 'use strict';
 import Popup from "./popup.js";
 import {GameBuilder, Reason} from "./game.js";
+import * as sound from "./sound.js";
 
 // innerText vs textContent
 //innerText는 'Element'의 속성으로, 해당 Element 내에서 사용자에게 '보여지는' 텍스트 값을 읽어옵니다
@@ -21,12 +22,15 @@ game.setGameStopListener((reason) => {
     switch (reason) {
         case Reason.cancel:
             message = 'Replay ??';
+            sound.playAlert();
             break;
         case Reason.win:
             message = 'YOU WON!!';
+            sound.playWin();
             break;
         case  Reason.lose:
             message = 'YOU LOSE :)';
+            sound.playBug();
             break;
         default:
             throw new Error('not valid reason');
